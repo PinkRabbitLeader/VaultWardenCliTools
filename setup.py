@@ -1,5 +1,8 @@
 from setuptools import setup, find_packages
 
+with open('README.md', encoding='UTF-8') as f:
+    long_description = f.read()
+
 setup(
     name='vault_warden_cli_tools',
     version='0.0.1',
@@ -9,7 +12,7 @@ setup(
     author_email='1072095696@qq.com',
     description="基于 Bitwarden CLI 工具(`bw`) 封装的 Python 包，为 Vault Warden 提供命令行接口工具。"
                 "A Python package that wraps the Bit Warden CLI tool (`bw`) to provide cli tools for Vault Warden.",
-    long_description=open('README.md').read(),
+    long_description=long_description,
     long_description_content_type='text/markdown',
     classifiers=[
         "Development Status :: 4 - Beta",
