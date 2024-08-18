@@ -17,7 +17,6 @@ def get_bw():
         bw_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bw_cli")
         bw_name = f"bw_windows.exe" if os_name == "windows" else f"bw_{os_name}"
         if not (os.path.exists(bw_path) and os.path.exists(os.path.join(bw_path, bw_name))):
-            os.makedirs(bw_path, exist_ok=True)
             download_bw_tool(bw_name=bw_name, bw_path=bw_path)  # 下载 BW 工具
 
         os.environ['BITWARDENCLI_APPDATA_DIR'] = bw_path  # 设置环境变量指向 BW 工具目录

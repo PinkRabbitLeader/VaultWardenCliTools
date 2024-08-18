@@ -11,6 +11,7 @@ from vault_warden_cli_tools.utils import detect_os, extract_date
 
 def download_bw_tool(bw_path: str, bw_name: str) -> str:
     print("开始下载 BW 终端管理工具")
+    os.makedirs(bw_path, exist_ok=True)
     _bw = os.path.join(bw_path, bw_name)
     system = bw_name.split('_')[1].replace('.exe', '')
     url = f"https://vault.bitwarden.com/download/?app=cli&platform={system}"
