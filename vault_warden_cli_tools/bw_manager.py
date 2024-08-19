@@ -4,6 +4,7 @@ import os
 import zipfile
 
 import requests
+from tqdm import tqdm
 
 from vault_warden_cli_tools.exceptions import DownloadError
 from vault_warden_cli_tools.utils import detect_os, extract_date
@@ -15,8 +16,12 @@ def download_bw_tool(bw_path: str, bw_name: str) -> str:
     _bw = os.path.join(bw_path, bw_name)
     system = bw_name.split('_')[1].replace('.exe', '')
     url = f"https://vault.bitwarden.com/download/?app=cli&platform={system}"
-    response = requests.get(url)
+    response = requests.get(url, stream=True)
     if response.status_code == 200:
+        # 获取文件总大小（字节数）
+        total_size = int(response.headers.get('content-length', 0))
+        # 设置块大小（以字节为单位）
+        block_size = 1024
         # 获取文件名
         content_disposition = response.headers.get('Content-Disposition')
         if content_disposition:
@@ -26,9 +31,15 @@ def download_bw_tool(bw_path: str, bw_name: str) -> str:
 
         # 拼接ZIP文件路径并保存ZIP文件
         zip_file_path = os.path.join(bw_path, file_name)
-
+        # 打开文件准备写入
         with open(zip_file_path, 'wb') as file:
-            file.write(response.content)
+            # 使用 tqdm 显示进度条
+            with tqdm(total=total_size, unit='B', unit_scale=True, desc=file_name) as progress_bar:
+                for data in response.iter_content(block_size):
+                    # 写入下载的数据块
+                    file.write(data)
+                    # 更新进度条
+                    progress_bar.update(len(data))
 
         # 解压ZIP文件
         with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
