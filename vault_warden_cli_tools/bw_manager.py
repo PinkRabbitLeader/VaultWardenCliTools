@@ -1,6 +1,5 @@
 __all__ = ["download_bw_tool", "update_bw"]
 
-import fnmatch
 import os
 import zipfile
 
