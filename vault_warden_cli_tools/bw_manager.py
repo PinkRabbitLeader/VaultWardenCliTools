@@ -9,7 +9,7 @@ from vault_warden_cli_tools.exceptions import DownloadError
 from vault_warden_cli_tools.utils import detect_os, extract_date
 
 
-def download_bw_tool() -> str:
+def download_bw_tool() -> None:
     from tqdm import tqdm
     # 获取 BW 工具
     os_name = detect_os()  # 获取当前操作系统名称
@@ -60,14 +60,11 @@ def download_bw_tool() -> str:
                             target.write(source.read())
                         break
 
-            # 删除ZIP文件
-            # os.remove(zip_file_path)
             print("BW 终端管理工具下载成功")
-            return _bw
         else:
             raise DownloadError(f'BW 工具下载失败, 原错误：{response.content.decode("utf-8")}')
-    else:
-        return _bw
+
+    os.environ['BITWARDENCLI_APPDATA_DIR'] = bw_path
 
 
 def update_bw() -> None:
