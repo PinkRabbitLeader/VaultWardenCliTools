@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
-from vault_warden_cli_tools.bw_manager import download_bw_tool
+from vault_warden_cli_tools import download_bw_tool
 
 
 @pytest.fixture
