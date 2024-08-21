@@ -17,21 +17,9 @@ class Config:
         self.bw_timeout = int(os.getenv('BW_TIMEOUT', 20))
         self.appdata_dir = os.getenv('BITWARDENCLI_APPDATA_DIR')
 
-        # 验证凭证
-        self._validate_credentials()
-
         # 如果appdata_dir没有设置，下载BW工具
         if not self.appdata_dir:
             self._download_bw_tool()
-
-    def _validate_credentials(self):
-        """验证配置的凭证是否合法"""
-        if self.bw_client_id and self.bw_client_secret:
-            self.bw_account = None  # 优先使用bw_client_id和bw_client_secret
-        elif self.bw_account:
-            self.bw_client_id = self.bw_client_secret = None  # 优先使用bw_account
-        else:
-            raise ValueError("必须提供BW_CLIENTID和BW_CLIENTSECRET，或者提供BW_ACCOUNT")
 
     def _download_bw_tool(self):
         """下载BW工具并设置appdata_dir"""
