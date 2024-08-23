@@ -3,6 +3,7 @@ import os
 
 class Config:
     def __init__(self, env_file=None):
+        from vault_warden_cli_tools.utils import add_to_path
         # 加载.env文件（如果提供了）
         if env_file:
             from dotenv import load_dotenv
@@ -20,6 +21,8 @@ class Config:
         # 如果appdata_dir没有设置，下载BW工具
         if not self.appdata_dir:
             self._download_bw_tool()
+
+        add_to_path(self.appdata_dir)
 
     def _download_bw_tool(self):
         """下载BW工具并设置appdata_dir"""

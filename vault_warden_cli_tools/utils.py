@@ -1,11 +1,12 @@
-__all__ = ["detect_os", "extract_date"]
+__all__ = ["detect_os", "extract_date", "add_to_path"]
 
+import os
 import platform
-
-from vault_warden_cli_tools.exceptions import UnsupportedOSError
+import sys
 
 
 def detect_os() -> str:
+    from vault_warden_cli_tools.exceptions import UnsupportedOSError
     """
     检测并返回操作系统名称。
     支持的操作系统包括: Windows, Linux, macOS。
@@ -27,3 +28,17 @@ def extract_date(filename) -> str:
 
     # 如果没有有效日期信息，返回文件名本身
     return filename
+
+
+def add_to_path(new_directory):
+    """
+    根据操作系统自动将新目录添加到 PATH 环境变量中。
+    仅在当前 Python 会话中生效。
+    """
+    current_path = os.environ.get('PATH', '')
+    if sys.platform.startswith('win'):
+        # Windows 平台
+        os.environ['PATH'] = f"{current_path};{new_directory}"
+    else:
+        # Linux 或 macOS 平台
+        os.environ['PATH'] = f"{current_path}:{new_directory}"
